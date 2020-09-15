@@ -86,7 +86,7 @@ public class MembersResourceTest {
     }
    
     @Test
-    public void testGetAllMovies() throws Exception {
+    public void testGetAllMembers() throws Exception {
         given()
                 .contentType("application/json")
                 .get("/groupmembers/all")

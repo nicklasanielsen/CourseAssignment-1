@@ -1,11 +1,11 @@
 package rest;
 
-import dtos.MemberDTO;
+import DTOs.MemberDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import utils.EMF_Creator;
-import facades.FacadeExample;
 import java.util.List;
+import facades.MemberFacade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,14 +21,14 @@ public class MembersResource {
     //An alternative way to get the EntityManagerFactory, whithout having to type the details all over the code
     //EMF = EMF_Creator.createEntityManagerFactory(DbSelector.DEV, Strategy.CREATE);
     
-    private static final MemberFacade FACADE =  MemberFacade.getFacadeExample(EMF);
+    private static final MemberFacade FACADE =  MemberFacade.getMemberFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
            
     @Path("all")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getAllMembers(){
-        List<MemberDTO> members = MemberFacade.getAllMembers();
+        List<MemberDTO> members = FACADE.getAllMembers();
         return GSON.toJson(members);
     }
 }
