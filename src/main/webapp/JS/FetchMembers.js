@@ -1,25 +1,28 @@
-let getAllPersonsBtn = document.getElementById("Reload_Members_Submit");
+let btn = document.getElementById("reloadMembers");
 
-getAllPersonsBtn.addEventListener('click', (e) => {
+btn.addEventListener('click', function(e) {
     e.preventDefault();
-    fetchAllPersons();
+    fetchAllMembers();
 });
 
-function fetchAllPersons() {
+function fetchAllMembers() {
     let url = 'https://www.newbiz.nicklasnielsen.dk/api/groupmembers/all';
-    let allPersons = document.getElementById("table_body");
+    let allMembers = document.getElementById("table_body");
+
+    let count = 1;
+
     fetch(url)
             .then(res => res.json())
             .then(data => {
-                let newArray = data.map(x => `<tr><td>${x.name}</td><td>${x.studentID}</td><td>${x.github}</td></tr>`);
-//                  let newArray = data.map(x => `<tr><th>${x.name}</th></tr><tr>
-//                  <th>${x.studentID}</th></tr><tr><th>${x.github}</th></tr>`);
-                allPersons.innerHTML =
-//                    `<th>Name</th><th>studentID</th><th>github</th>
-//                    ${newArray.join("")}`;
-                        `<table>
-                    <thead><th>Name</th><th>Phone</th></thead>
-                    ${newArray.join("")}
-                </table>`;
+                let membersArray = data.map(member => `<tr>
+                <td>${count}</td>
+                <td>${member.name}</td>
+                <td>${member.studentID}</td>
+                <td>${member.github}</td>
+                </tr>`,
+                count++);
+
+                allMembers.innerHTML = membersArray.join("");
+
             });
 }
