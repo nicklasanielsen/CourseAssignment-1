@@ -17,25 +17,37 @@ import javax.ws.rs.core.MediaType;
 public class MembersResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    
+
     //An alternative way to get the EntityManagerFactory, whithout having to type the details all over the code
     //EMF = EMF_Creator.createEntityManagerFactory(DbSelector.DEV, Strategy.CREATE);
-    
-    private static final MemberFacade FACADE =  MemberFacade.getMemberFacade(EMF);
+    private static final MemberFacade FACADE = MemberFacade.getMemberFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-           
+
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public String getDefault(){
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getDefault() {
         return "{\"msg\":\"Hello World\"}";
     }
-    
+
     @Path("/all")
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public String getAllMembers(){
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getAllMembers() {
         List<MemberDTO> members = FACADE.getAllMembers();
         return GSON.toJson(members);
     }
-    
+
+    @Path("/reset")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String resetDB() {
+        boolean resetPerformed = FACADE.resetDB();
+
+        if (resetPerformed) {
+            return "{\"msg\":\"Reset performed\"}";
+        } else {
+            return "{\"msg\":\"Reset failed!\"}";
+        }
+    }
+
 }

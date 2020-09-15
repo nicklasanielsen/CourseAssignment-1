@@ -18,6 +18,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.AfterAll;
@@ -178,5 +179,15 @@ public class MembersResourceTest {
                 .then()
                 .assertThat()
                 .body("github", hasItems(usernames.toArray(new String[0])));
+    }
+
+    @Test
+    public void testResetDB() {
+        given()
+                .contentType(ContentType.JSON)
+                .get("/groupmembers/reset")
+                .then()
+                .assertThat()
+                .body("msg", equalTo("Reset performed"));
     }
 }

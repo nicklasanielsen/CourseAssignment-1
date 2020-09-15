@@ -59,4 +59,21 @@ public class MemberFacade {
         }
     }
 
+    public boolean resetDB() {
+        EntityManager em = getEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
+            em.persist(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
+            em.persist(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
+            em.persist(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        
+        return true;
+    }
+
 }

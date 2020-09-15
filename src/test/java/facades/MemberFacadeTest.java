@@ -82,5 +82,17 @@ public class MemberFacadeTest {
         // Assert
         assertTrue(actual.containsAll(expected));
     }
+    
+    @Test
+    public void testResetDB(){
+        // Arrange
+        boolean expected = true;
+        
+        // Act
+        boolean actual = facade.resetDB();
+        
+        // Assert
+        assertEquals(expected, actual);
+    }
 
 }
