@@ -11,11 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 public class MemberTest {
 
     private Member member;
-    private final String FIRSTNAME = "FirstTest";
-    private final String MIDDLENAME = "MiddleTest";
-    private final String LASTNAME = "LastTest";
-    private final String STUDENT_ID = "TEST-ID";
-    private final String GITHUB = "GitHub Test";
+    private final String FIRSTNAME = "Nicklas";
+    private final String MIDDLENAME = "Alexander";
+    private final String LASTNAME = "Nielsen";
+    private final String STUDENT_ID = "cph-nn161";
+    private final String GITHUB = "nicklasanielsen";
 
     public MemberTest() {
     }

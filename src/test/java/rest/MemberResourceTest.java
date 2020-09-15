@@ -7,7 +7,6 @@ import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +27,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- *
  * @author Mathias Nielsen
  * @author Nicklas Nielsen
  */
-public class MembersResourceTest {
+public class MemberResourceTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
@@ -49,8 +47,7 @@ public class MembersResourceTest {
     }
 
     @BeforeAll
-    public static void setUpClass() throws IOException {
-        //This method must be called before you request the EntityManagerFactory
+    public static void setUpClass() {
         EMF_Creator.startREST_TestWithDB();
         emf = EMF_Creator.createEntityManagerFactoryForTest();
 
@@ -58,67 +55,61 @@ public class MembersResourceTest {
         memberDTOs = new ArrayList();
 
         httpServer = startServer();
-        httpServer.start();
-        while (!httpServer.isStarted()) {
-        }
         //Setup RestAssured
         RestAssured.baseURI = SERVER_URL;
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
-        
-        EntityManager em = emf.createEntityManager();
-        
-        try{
-            em.getTransaction().begin();
-            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
-            em.getTransaction().commit();
-        } catch (Exception e){
-            System.err.println("Error: Unable to delete all Members");
-            System.err.println(e);
-        } finally{
-            em.close();
-        }
     }
 
     @AfterAll
     public static void closeTestServer() {
         EMF_Creator.endREST_TestWithDB();
         httpServer.shutdownNow();
-    }
-
-    @BeforeEach
-    public void setUp() {
         EntityManager em = emf.createEntityManager();
-
-        members.add(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
-        members.add(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
-        members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
-
-        members.forEach(member -> {
-            memberDTOs.add(new MemberDTO(member));
-        });
 
         try {
             em.getTransaction().begin();
-            em.persist(members.get(0));
-            em.persist(members.get(1));
-            em.persist(members.get(2));
+            em.createNamedQuery("Members.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
 
+    @BeforeEach
+    public void setUp() {
+        EntityManager em = emf.createEntityManager();
+
+        // Add test data here
+        members.add(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
+        members.add(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
+        members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
+
+        try {
+            em.getTransaction().begin();
+            members.forEach(member -> {
+                em.persist(member);
+            });
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        members.forEach(member -> {
+            memberDTOs.add(new MemberDTO(member));
+        });
+    }
+
     @AfterEach
     public void tearDown() {
-        EntityManager em = emf.createEntityManager();
-        
         members.clear();
         memberDTOs.clear();
-        
-        try{
+
+        EntityManager em = emf.createEntityManager();
+
+        try {
             em.getTransaction().begin();
-            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Members.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -128,11 +119,7 @@ public class MembersResourceTest {
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
-        given()
-                .when()
-                .get("/groupmembers")
-                .then()
-                .statusCode(200);
+        given().when().get("/groupmembers/all").then().statusCode(200);
     }
 
     @Test
@@ -194,15 +181,13 @@ public class MembersResourceTest {
         memberDTOs.forEach(memberDTO -> {
             usernames.add(memberDTO.getGithub());
         });
-        
+
         given()
                 .contentType(ContentType.JSON)
                 .get("/groupmembers/all")
                 .then()
                 .assertThat()
                 .body("github", hasItems(usernames.toArray(new String[0])));
-        
-        
     }
 
     @Test

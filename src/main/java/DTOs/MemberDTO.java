@@ -50,10 +50,7 @@ public class MemberDTO {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + Objects.hashCode(this.fullname);
-        hash = 43 * hash + Objects.hashCode(this.studentID);
-        hash = 43 * hash + Objects.hashCode(this.github);
+        int hash = 5;
         return hash;
     }
 

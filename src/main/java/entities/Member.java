@@ -16,25 +16,24 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Member.deleteAllRows", query = "DELETE from Member"),
-    @NamedQuery(name = "Member.getAll", query = "SELECT m FROM Member m")
-})
+    @NamedQuery(name = "Members.deleteAllRows", query = "DELETE from Member"),
+    @NamedQuery(name = "Members.getAll", query = "SELECT m FROM Member m"),})
 public class Member implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name="id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "firstname", nullable = false, length = 25)
+    @Column(name="firstname", nullable = false)
     private String firstname;
-    @Column(name = "middlename", nullable = true, length = 25)
+    @Column(name="middlename", nullable = true)
     private String middlename;
-    @Column(name = "lastname", nullable = false, length = 25)
+    @Column(name="lastname", nullable = false)
     private String lastname;
-    @Column(name = "student_id", nullable = false, length = 9)
+    @Column(name="studentID", nullable = false)
     private String studentID;
-    @Column(name = "github_username", nullable = false, length = 39)
+    @Column(name="github", nullable = false)
     private String github;
 
     public Member(String firstname, String middlename, String lastname, String studentID, String github) {
@@ -99,12 +98,6 @@ public class Member implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.firstname);
-        hash = 97 * hash + Objects.hashCode(this.middlename);
-        hash = 97 * hash + Objects.hashCode(this.lastname);
-        hash = 97 * hash + Objects.hashCode(this.studentID);
-        hash = 97 * hash + Objects.hashCode(this.github);
         return hash;
     }
 

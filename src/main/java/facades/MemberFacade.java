@@ -21,11 +21,6 @@ public class MemberFacade {
     private MemberFacade() {
     }
 
-    /**
-     *
-     * @param _emf
-     * @return an instance of this facade class.
-     */
     public static MemberFacade getMemberFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
@@ -41,13 +36,11 @@ public class MemberFacade {
     public List<MemberDTO> getAllMembers() {
         EntityManager em = getEntityManager();
 
-        List<Member> members;
-        List<MemberDTO> memberDTOs = new ArrayList();
-
         try {
-            Query query = em.createNamedQuery("Member.getAll");
+            Query query = em.createNamedQuery("Members.getAll");
+            List<Member> members = query.getResultList();
 
-            members = query.getResultList();
+            List<MemberDTO> memberDTOs = new ArrayList();
 
             members.forEach(member -> {
                 memberDTOs.add(new MemberDTO(member));
@@ -61,24 +54,23 @@ public class MemberFacade {
 
     public boolean resetDB() {
         EntityManager em = getEntityManager();
+        List<Member> members = new ArrayList();
+
+        // Users to be added
+        members.add(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
+        members.add(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
+        members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
 
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
-            em.persist(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
-            em.persist(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
-            em.persist(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
-            em.getTransaction().commit();
-        } catch(Exception e){
-            em.getTransaction().begin();
-            em.persist(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
-            em.persist(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
-            em.persist(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
+            for (Member member : members) {
+                em.persist(member);
+            }
             em.getTransaction().commit();
         } finally {
             em.close();
         }
-        
+
         return true;
     }
 

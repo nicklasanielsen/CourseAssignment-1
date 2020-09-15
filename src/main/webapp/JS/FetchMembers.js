@@ -1,14 +1,18 @@
+/**
+ * 
+ * @author Nikolaj Larsen
+ */
 let btn = document.getElementById("reloadMembers");
 
-btn.addEventListener('click', function(e) {
+btn.addEventListener('click', function (e) {
     e.preventDefault();
     fetchAllMembers();
 });
 
 function fetchAllMembers() {
-    let url = 'http://localhost:8080/CourseAssignment-1/api/groupmembers/all';
-    let allMembers = document.getElementById("table_body");
-    
+    let url = 'https://newbiz.nicklasnielsen.dk/CourseAssignment-1/api/groupmembers/all';
+    let table = document.getElementById("table_body");
+
     fetch(url)
             .then(res => res.json())
             .then(data => {
@@ -18,7 +22,6 @@ function fetchAllMembers() {
                 <td>${member.github}</td>
                 </tr>`);
 
-                allMembers.innerHTML = membersArray.join("");
-
+                table.innerHTML = membersArray.join("");
             });
 }
