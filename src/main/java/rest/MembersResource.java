@@ -24,11 +24,18 @@ public class MembersResource {
     private static final MemberFacade FACADE =  MemberFacade.getMemberFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
            
-    @Path("all")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getDefault(){
+        return "{\"msg\":\"Hello World\"}";
+    }
+    
+    @Path("/all")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getAllMembers(){
         List<MemberDTO> members = FACADE.getAllMembers();
         return GSON.toJson(members);
     }
+    
 }
