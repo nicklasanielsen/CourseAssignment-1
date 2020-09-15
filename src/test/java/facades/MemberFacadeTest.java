@@ -34,6 +34,19 @@ public class MemberFacadeTest {
         facade = MemberFacade.getMemberFacade(emf);
         members = new ArrayList();
         memberDTOs = new ArrayList();
+        
+        EntityManager em = emf.createEntityManager();
+        
+        try{
+            em.getTransaction().begin();
+            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e){
+            System.err.println("Error: Unable to delete all Members");
+            System.err.println(e);
+        } finally{
+            em.close();
+        }
     }
 
     @AfterAll
@@ -55,7 +68,6 @@ public class MemberFacadeTest {
 
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
             em.persist(members.get(0));
             em.persist(members.get(1));
             em.persist(members.get(2));
@@ -67,8 +79,18 @@ public class MemberFacadeTest {
 
     @AfterEach
     public void tearDown() {
+        EntityManager em = emf.createEntityManager();
+        
         members.clear();
         memberDTOs.clear();
+        
+        try{
+            em.getTransaction().begin();
+            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Test

@@ -65,6 +65,19 @@ public class MembersResourceTest {
         RestAssured.baseURI = SERVER_URL;
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
+        
+        EntityManager em = emf.createEntityManager();
+        
+        try{
+            em.getTransaction().begin();
+            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e){
+            System.err.println("Error: Unable to delete all Members");
+            System.err.println(e);
+        } finally{
+            em.close();
+        }
     }
 
     @AfterAll
@@ -87,7 +100,6 @@ public class MembersResourceTest {
 
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
             em.persist(members.get(0));
             em.persist(members.get(1));
             em.persist(members.get(2));
@@ -99,8 +111,18 @@ public class MembersResourceTest {
 
     @AfterEach
     public void tearDown() {
+        EntityManager em = emf.createEntityManager();
+        
         members.clear();
         memberDTOs.clear();
+        
+        try{
+            em.getTransaction().begin();
+            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Test
@@ -172,13 +194,15 @@ public class MembersResourceTest {
         memberDTOs.forEach(memberDTO -> {
             usernames.add(memberDTO.getGithub());
         });
-
+        
         given()
                 .contentType(ContentType.JSON)
                 .get("/groupmembers/all")
                 .then()
                 .assertThat()
                 .body("github", hasItems(usernames.toArray(new String[0])));
+        
+        
     }
 
     @Test
