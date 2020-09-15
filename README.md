@@ -1,6 +1,6 @@
 # Course Assignment 1
 
-[![Build Status](https://travis-ci.com/nicklasanielsen/CourseAssignment-1.svg?token=zgehqy9DRGP96w5Nrecw&branch=master)](https://travis-ci.com/nicklasanielsen/CourseAssignment-1)
+[![Build Status](https://travis-ci.com/nicklasanielsen/CourseAssignment-1.svg?token=zgehqy9DRGP96w5Nrecw&branch=development)](https://travis-ci.com/nicklasanielsen/CourseAssignment-1)
 
 More information coming soon.
 
