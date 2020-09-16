@@ -63,6 +63,7 @@ public class MemberFacade {
 
         try {
             em.getTransaction().begin();
+            em.createNamedQuery("Members.deleteAllRows").executeUpdate();
             for (Member member : members) {
                 em.persist(member);
             }
