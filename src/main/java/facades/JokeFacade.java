@@ -4,6 +4,7 @@ import DTOs.JokeDTO;
 import entities.Joke;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -45,7 +46,7 @@ public class JokeFacade {
             jokes.forEach(joke -> {
                 jokeDTOs.add(new JokeDTO(joke));
             });
-            
+
             return jokeDTOs;
         } finally {
             em.close();
@@ -60,17 +61,28 @@ public class JokeFacade {
             query.setParameter("id", id);
 
             return (Joke) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
         } finally {
             em.close();
         }
+    }
+
+    private long getRandomId(long start, long end) {
+        long id = start + (long) (Math.random() * (end - start));
+        return id;
     }
 
     public Joke getRandomJoke() {
         EntityManager em = getEntityManager();
 
         try {
-            Query query = em.createNamedQuery("Joke.getRandom");
-            return (Joke) query.getSingleResult();
+            long firstIndex = (long) em.createNamedQuery("Joke.getFirstIndex").getSingleResult();
+            long lastIndex = (long) em.createNamedQuery("Joke.getLastIndex").getSingleResult();
+
+            Joke joke = getJokeById(getRandomId(firstIndex, lastIndex));
+
+            return joke;
         } finally {
             em.close();
         }
@@ -81,6 +93,10 @@ public class JokeFacade {
         List<Joke> jokes = new ArrayList();
 
         // Jokes to be added
+        jokes.add(new Joke("Joke1", "Ref1", "Type1"));
+        jokes.add(new Joke("Joke2", "Ref2", "Type2"));
+        jokes.add(new Joke("Joke3", "Ref3", "Type3"));
+
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Joke.deleteAllRows").executeUpdate();

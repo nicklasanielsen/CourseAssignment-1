@@ -54,7 +54,9 @@ public class JokeFacadeTest {
         EntityManager em = emf.createEntityManager();
 
         // Add test data here
-        
+        jokes.add(new Joke("Joke1", "Ref1", "Type1"));
+        jokes.add(new Joke("Joke2", "Ref2", "Type2"));
+        jokes.add(new Joke("Joke3", "Ref3", "Type3"));
         
         try {
             em.getTransaction().begin();

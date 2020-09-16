@@ -14,15 +14,15 @@ import javax.persistence.NamedQuery;
  *
  * @author Nikolaj Larsen
  */
-
-
 @Entity
 @NamedQueries({
 @NamedQuery(name = "Joke.deleteAllRows", query = "DELETE from Joke"),
-@NamedQuery(name = "Joke.getAll", query = "SELECT j FROM Joke j"),})
-@NamedQuery(name = "Joke.getById", query = "SELECT j FROM Joke j WHERE j.id = :id")
-//@NamedQuery(name = "Joke.getRandom", query = "")
+@NamedQuery(name = "Joke.getAll", query = "SELECT j FROM Joke j"),
+@NamedQuery(name = "Joke.getFirstIndex", query = "SELECT j.id FROM Joke j WHERE j.id = (SELECT MIN(j.id) FROM Joke j)"),
+@NamedQuery(name = "Joke.getLastIndex", query = "SELECT j.id FROM Joke j WHERE j.id = (SELECT MAX(j.id) FROM Joke j)"),
+@NamedQuery(name = "Joke.getById", query = "SELECT j FROM Joke j WHERE j.id = :id")})
 public class Joke implements Serializable {
+    
     @Id
     @Column(name="id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
