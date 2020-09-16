@@ -114,7 +114,7 @@ public class JokeFacadeTest {
     @Test
     public void testGetJokeById_not_found(){
         // Arange
-        long id = jokes.size + 1;
+        long id = jokes.size() + 1;
         
         // Act
         Joke actual = facade.getJokeById(id);
