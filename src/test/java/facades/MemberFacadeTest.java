@@ -9,13 +9,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
- *
+ * 
  * @author Nicklas Nielsen
  */
 public class MemberFacadeTest {
@@ -34,59 +34,55 @@ public class MemberFacadeTest {
         facade = MemberFacade.getMemberFacade(emf);
         members = new ArrayList();
         memberDTOs = new ArrayList();
-        
-        EntityManager em = emf.createEntityManager();
-        
-        try{
-            em.getTransaction().begin();
-            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
-            em.getTransaction().commit();
-        } catch (Exception e){
-            System.err.println("Error: Unable to delete all Members");
-            System.err.println(e);
-        } finally{
-            em.close();
-        }
     }
 
     @AfterAll
     public static void tearDownClass() {
-        emf.close();
-    }
-
-    @BeforeEach
-    public void setUp() {
         EntityManager em = emf.createEntityManager();
-
-        members.add(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
-        members.add(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
-        members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
-
-        members.forEach(member -> {
-            memberDTOs.add(new MemberDTO(member));
-        });
 
         try {
             em.getTransaction().begin();
-            em.persist(members.get(0));
-            em.persist(members.get(1));
-            em.persist(members.get(2));
+            em.createNamedQuery("Members.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
 
+    @BeforeEach
+    public void setUp() {
+        EntityManager em = emf.createEntityManager();
+
+        // Add test data here
+        members.add(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
+        members.add(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
+        members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
+
+        try {
+            em.getTransaction().begin();
+            members.forEach(member -> {
+                em.persist(member);
+            });
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        members.forEach(member -> {
+            memberDTOs.add(new MemberDTO(member));
+        });
+    }
+
     @AfterEach
     public void tearDown() {
-        EntityManager em = emf.createEntityManager();
-        
         members.clear();
         memberDTOs.clear();
-        
-        try{
+
+        EntityManager em = emf.createEntityManager();
+
+        try {
             em.getTransaction().begin();
-            em.createNamedQuery("Member.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Members.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -102,7 +98,7 @@ public class MemberFacadeTest {
         List<MemberDTO> actual = facade.getAllMembers();
 
         // Assert
-        assertTrue(actual.containsAll(expected));
+        assertTrue(expected.containsAll(actual));
     }
     
     @Test
