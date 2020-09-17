@@ -59,11 +59,11 @@ public class JokeFacadeTest {
         jokes.add(new Joke("Joke3", "Ref3", "Type3"));
 
         try {
-            em.getTransaction().begin();
             jokes.forEach(member -> {
+                em.getTransaction().begin();
                 em.persist(member);
+                em.getTransaction().commit();
             });
-            em.getTransaction().commit();
         } finally {
             em.close();
         }

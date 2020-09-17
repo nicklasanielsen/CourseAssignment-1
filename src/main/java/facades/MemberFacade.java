@@ -64,10 +64,12 @@ public class MemberFacade {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Members.deleteAllRows").executeUpdate();
-            for (Member member : members) {
-                em.persist(member);
-            }
             em.getTransaction().commit();
+            members.forEach(member -> {
+                em.getTransaction().begin();
+                em.persist(member);
+                em.getTransaction().commit();
+            });
         } finally {
             em.close();
         }
