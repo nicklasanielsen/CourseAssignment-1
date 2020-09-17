@@ -8,12 +8,12 @@ import java.util.Objects;
  * @author Nikolaj Larsen
  */
 public class JokeDTO {
-    
+
     private String joke;
     private String reference;
     private String type;
-    
-    public JokeDTO (Joke j) {
+
+    public JokeDTO(Joke j) {
         joke = j.getJoke();
         reference = j.getReference();
         type = j.getType();
@@ -72,7 +72,5 @@ public class JokeDTO {
         }
         return true;
     }
-    
-    
-    
+
 }

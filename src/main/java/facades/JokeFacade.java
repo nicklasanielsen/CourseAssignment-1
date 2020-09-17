@@ -4,7 +4,6 @@ import DTOs.JokeDTO;
 import entities.Joke;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;

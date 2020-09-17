@@ -57,7 +57,7 @@ public class JokeFacadeTest {
         jokes.add(new Joke("Joke1", "Ref1", "Type1"));
         jokes.add(new Joke("Joke2", "Ref2", "Type2"));
         jokes.add(new Joke("Joke3", "Ref3", "Type3"));
-        
+
         try {
             em.getTransaction().begin();
             jokes.forEach(member -> {
@@ -72,7 +72,7 @@ public class JokeFacadeTest {
             jokeDTOs.add(new JokeDTO(joke));
         });
     }
-    
+
     @AfterEach
     public void tearDown() {
         jokes.clear();
@@ -88,63 +88,63 @@ public class JokeFacadeTest {
             em.close();
         }
     }
-    
+
     @Test
-    public void testGetAllJoke(){
+    public void testGetAllJoke() {
         // Arrange
         List<JokeDTO> expected = jokeDTOs;
-        
+
         // Act
         List<JokeDTO> actual = facade.getAllJokes();
-        
+
         // Assert
         assertTrue(expected.containsAll(actual));
     }
-    
+
     @Test
-    public void testGetJokeById_found(){
+    public void testGetJokeById_found() {
         // Arrange
         Joke expected = jokes.get(0);
-        
+
         // Act
         Joke actual = facade.getJokeById(expected.getId());
-        
+
         // Assert
         assertEquals(expected, actual);
     }
-    
+
     @Test
-    public void testGetJokeById_not_found(){
+    public void testGetJokeById_not_found() {
         // Arange
         long id = jokes.size() + 1;
-        
+
         // Act
         Joke actual = facade.getJokeById(id);
-        
+
         // Assert
         assertNull(actual);
     }
-    
+
     @Test
-    public void testGetRandomJoke(){
+    public void testGetRandomJoke() {
         // Arrange
         List<Joke> list = jokes;
-        
+
         // Act
         Joke actual = facade.getRandomJoke();
-        
+
         // Assert
         assertTrue(list.contains(actual));
     }
-    
+
     @Test
-    public void testResetDB(){
+    public void testResetDB() {
         // Arrange
         boolean expected = true;
-        
+
         // Act
         boolean actual = facade.resetDB();
-        
+
         // Assert
         assertEquals(expected, actual);
     }

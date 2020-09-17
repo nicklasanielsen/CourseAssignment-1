@@ -119,7 +119,7 @@ public class MemberResourceTest {
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
-        given().when().get("/groupmembers/all").then().statusCode(200);
+        given().when().get("/groupmembers").then().statusCode(200);
     }
 
     @Test

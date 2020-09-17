@@ -16,22 +16,22 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(name = "Joke.deleteAllRows", query = "DELETE from Joke"),
-@NamedQuery(name = "Joke.getAll", query = "SELECT j FROM Joke j"),
-@NamedQuery(name = "Joke.getFirstIndex", query = "SELECT j.id FROM Joke j WHERE j.id = (SELECT MIN(j.id) FROM Joke j)"),
-@NamedQuery(name = "Joke.getLastIndex", query = "SELECT j.id FROM Joke j WHERE j.id = (SELECT MAX(j.id) FROM Joke j)"),
-@NamedQuery(name = "Joke.getById", query = "SELECT j FROM Joke j WHERE j.id = :id")})
+    @NamedQuery(name = "Joke.deleteAllRows", query = "DELETE from Joke"),
+    @NamedQuery(name = "Joke.getAll", query = "SELECT j FROM Joke j"),
+    @NamedQuery(name = "Joke.getFirstIndex", query = "SELECT j.id FROM Joke j WHERE j.id = (SELECT MIN(j.id) FROM Joke j)"),
+    @NamedQuery(name = "Joke.getLastIndex", query = "SELECT j.id FROM Joke j WHERE j.id = (SELECT MAX(j.id) FROM Joke j)"),
+    @NamedQuery(name = "Joke.getById", query = "SELECT j FROM Joke j WHERE j.id = :id")})
 public class Joke implements Serializable {
-    
+
     @Id
-    @Column(name="id", nullable = false)
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="joke", nullable = false)
+    @Column(name = "joke", nullable = false)
     private String joke;
-    @Column(name="reference", nullable = true)
+    @Column(name = "reference", nullable = true)
     private String reference;
-    @Column(name="type", nullable = false)
+    @Column(name = "type", nullable = false)
     private String type;
 
     public Joke(String joke, String reference, String type) {
@@ -39,8 +39,8 @@ public class Joke implements Serializable {
         this.reference = reference;
         this.type = type;
     }
-    
-    public Joke(){
+
+    public Joke() {
     }
 
     public Long getId() {
@@ -107,5 +107,5 @@ public class Joke implements Serializable {
         }
         return true;
     }
-    
+
 }
