@@ -25,13 +25,18 @@ function fetchJokeByID(id) {
     fetch(url)
             .then(res => res.json())
             .then(data => {
-                let sj = `<tr>
+                if (data == null) {
+                    selectedJoke.innerHTML = "<tr><td>" + id + "</td><td>Der findes ikke en joke på dette id</td><td></td><td></td></tr>";
+                } else {
+                    let sj = `<tr>
+                    <td>${data.id}</td>
                     <td>${data.joke}</td>
                     <td>${data.reference}</td>
                     <td>${data.type}</td>
                     </tr>`;
 
-                selectedJoke.innerHTML = sj;
+                    selectedJoke.innerHTML = sj;
+                }
             });
 
 }
@@ -44,6 +49,7 @@ function fetchRandomJoke() {
             .then(res => res.json())
             .then(data => {
                 let sj = `<tr>
+                    <td>${data.id}</td>
                     <td>${data.joke}</td>
                     <td>${data.reference}</td>
                     <td>${data.type}</td>
@@ -61,6 +67,7 @@ function fetchAllJokes() {
             .then(res => res.json())
             .then(data => {
                 let jokesArray = data.map(joke => `<tr>
+                <td></td>
                 <td>${joke.joke}</td>
                 <td>${joke.reference}</td>
                 <td>${joke.type}</td>
