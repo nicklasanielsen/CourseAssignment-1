@@ -10,7 +10,7 @@ btn.addEventListener('click', function (e) {
 });
 
 function fetchAllMembers() {
-    let url = 'https://newbiz.nicklasnielsen.dk/CourseAssignment-1/api/groupmembers/all';
+    let url = './api/groupmembers/all';
     let table = document.getElementById("table_body");
 
     fetch(url)

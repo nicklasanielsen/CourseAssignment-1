@@ -86,11 +86,11 @@ public class MemberResourceTest {
         members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
 
         try {
-            em.getTransaction().begin();
             members.forEach(member -> {
+                em.getTransaction().begin();
                 em.persist(member);
+                em.getTransaction().commit();
             });
-            em.getTransaction().commit();
         } finally {
             em.close();
         }
@@ -119,7 +119,7 @@ public class MemberResourceTest {
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
-        given().when().get("/groupmembers/all").then().statusCode(200);
+        given().when().get("/groupmembers").then().statusCode(200);
     }
 
     @Test

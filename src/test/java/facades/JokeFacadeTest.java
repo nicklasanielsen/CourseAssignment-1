@@ -1,8 +1,7 @@
 package facades;
 
-import DTOs.MemberDTO;
-import utils.EMF_Creator;
-import entities.Member;
+import DTOs.JokeDTO;
+import entities.Joke;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -13,27 +12,28 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.EMF_Creator;
 
 /**
  *
  * @author Nicklas Nielsen
  */
-public class MemberFacadeTest {
+public class JokeFacadeTest {
 
     private static EntityManagerFactory emf;
-    private static MemberFacade facade;
-    private static List<Member> members;
-    private static List<MemberDTO> memberDTOs;
+    private static JokeFacade facade;
+    private static List<Joke> jokes;
+    private static List<JokeDTO> jokeDTOs;
 
-    public MemberFacadeTest() {
+    public JokeFacadeTest() {
     }
 
     @BeforeAll
     public static void setUpClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
-        facade = MemberFacade.getMemberFacade(emf);
-        members = new ArrayList();
-        memberDTOs = new ArrayList();
+        facade = JokeFacade.getJokeFacade(emf);
+        jokes = new ArrayList();
+        jokeDTOs = new ArrayList();
     }
 
     @AfterAll
@@ -42,7 +42,7 @@ public class MemberFacadeTest {
 
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Members.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Joke.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -54,12 +54,12 @@ public class MemberFacadeTest {
         EntityManager em = emf.createEntityManager();
 
         // Add test data here
-        members.add(new Member("Nicklas", "Alexander", "Nielsen", "cph-nn161", "nicklasanielsen"));
-        members.add(new Member("Mathias", "Haugaard", "Nielsen", "cph-mn556", "Haugaard-DK"));
-        members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
+        jokes.add(new Joke("Joke1", "Ref1", "Type1"));
+        jokes.add(new Joke("Joke2", "Ref2", "Type2"));
+        jokes.add(new Joke("Joke3", "Ref3", "Type3"));
 
         try {
-            members.forEach(member -> {
+            jokes.forEach(member -> {
                 em.getTransaction().begin();
                 em.persist(member);
                 em.getTransaction().commit();
@@ -68,21 +68,21 @@ public class MemberFacadeTest {
             em.close();
         }
 
-        members.forEach(member -> {
-            memberDTOs.add(new MemberDTO(member));
+        jokes.forEach(joke -> {
+            jokeDTOs.add(new JokeDTO(joke));
         });
     }
 
     @AfterEach
     public void tearDown() {
-        members.clear();
-        memberDTOs.clear();
+        jokes.clear();
+        jokeDTOs.clear();
 
         EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Members.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Joke.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -90,15 +90,51 @@ public class MemberFacadeTest {
     }
 
     @Test
-    public void testGetAllMembers() {
+    public void testGetAllJoke() {
         // Arrange
-        List<MemberDTO> expected = memberDTOs;
+        List<JokeDTO> expected = jokeDTOs;
 
         // Act
-        List<MemberDTO> actual = facade.getAllMembers();
+        List<JokeDTO> actual = facade.getAllJokes();
 
         // Assert
         assertTrue(expected.containsAll(actual));
+    }
+
+    @Test
+    public void testGetJokeById_found() {
+        // Arrange
+        Joke expected = jokes.get(0);
+
+        // Act
+        Joke actual = facade.getJokeById(expected.getId());
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetJokeById_not_found() {
+        // Arange
+        long id = jokes.size() + 1;
+
+        // Act
+        Joke actual = facade.getJokeById(id);
+
+        // Assert
+        assertNull(actual);
+    }
+
+    @Test
+    public void testGetRandomJoke() {
+        // Arrange
+        List<Joke> list = jokes;
+
+        // Act
+        Joke actual = facade.getRandomJoke();
+
+        // Assert
+        assertTrue(list.contains(actual));
     }
 
     @Test
@@ -112,5 +148,4 @@ public class MemberFacadeTest {
         // Assert
         assertEquals(expected, actual);
     }
-
 }
