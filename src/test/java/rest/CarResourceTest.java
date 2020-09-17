@@ -1,5 +1,7 @@
 package rest;
 
+import DTOs.CarDTO;
+import entities.Car;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
@@ -14,6 +16,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
@@ -30,23 +33,23 @@ import utils.EMF_Creator;
  * @author Nikolaj Larsen
  */
 public class CarResourceTest {
-    
+
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
     private static List<Car> cars;
     private static List<CarDTO> carDTOs;
-    
+
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
-    
+
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc);
     }
-    
+
     @BeforeAll
-    public void setUpClass() {
+    public static void setUpClass() {
         EMF_Creator.startREST_TestWithDB();
         emf = EMF_Creator.createEntityManagerFactoryForTest();
 
@@ -59,7 +62,7 @@ public class CarResourceTest {
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
     }
-    
+
     @AfterAll
     public static void closeTestServer() {
         EMF_Creator.endREST_TestWithDB();
@@ -74,32 +77,32 @@ public class CarResourceTest {
             em.close();
         }
     }
-    
+
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         EntityManager em = emf.createEntityManager();
-        
+
         // Add test data here
         cars.add(new Car(1997, "Skoda", "bil3", 1337, "HHsx725", "Sven"));
         cars.add(new Car(1945, "Volkswagen", "bil1", 2674, "B3H82G", "Egon"));
         cars.add(new Car(1997, "Nissan", "bil2", 4011, "B4J68N", "Vagn"));
-        
-                try {
-            cars.forEach(member -> {
+
+        try {
+            cars.forEach(car -> {
                 em.getTransaction().begin();
-                em.persist(member);
+                em.persist(car);
                 em.getTransaction().commit();
             });
         } finally {
             em.close();
         }
 
-        cars.forEach(member -> {
-            carDTOs.add(new CarDTO(member));
+        cars.forEach(car -> {
+            carDTOs.add(new CarDTO(car));
         });
     }
-    
-        @AfterEach
+
+    @AfterEach
     public void tearDown() {
         cars.clear();
         carDTOs.clear();
@@ -114,13 +117,13 @@ public class CarResourceTest {
             em.close();
         }
     }
-    
+
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
         given().when().get("/cars").then().statusCode(200);
     }
-    
+
     @Test
     public void testGetAllCars_status_code_200() {
         given()
@@ -130,7 +133,7 @@ public class CarResourceTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode());
     }
-    
+
     @Test
     public void testGetAllCars_size() {
         given()
@@ -140,7 +143,7 @@ public class CarResourceTest {
                 .assertThat()
                 .body("size()", is(carDTOs.size()));
     }
-    
+
     @Test
     public void testGetAllCars_year() {
         List<Integer> years = new ArrayList();
@@ -156,8 +159,8 @@ public class CarResourceTest {
                 .assertThat()
                 .body("year", hasItems(years.toArray(new Integer[0])));
     }
-    
-        @Test
+
+    @Test
     public void testGetAllCars_make() {
         List<String> makes = new ArrayList();
 
@@ -172,7 +175,7 @@ public class CarResourceTest {
                 .assertThat()
                 .body("make", hasItems(makes.toArray(new String[0])));
     }
-    
+
     @Test
     public void testGetAllCars_model() {
         List<String> model = new ArrayList();
@@ -188,13 +191,13 @@ public class CarResourceTest {
                 .assertThat()
                 .body("model", hasItems(model.toArray(new String[0])));
     }
-    
+
     @Test
     public void testGetAllCars_price() {
-        List<Double> price = new ArrayList();
+        List<String> price = new ArrayList();
 
         carDTOs.forEach(carDTO -> {
-            price.add(carDTO.getPrice());
+            price.add(Double.toString(carDTO.getPrice()));
         });
 
         given()
@@ -202,15 +205,15 @@ public class CarResourceTest {
                 .get("cars/all")
                 .then()
                 .assertThat()
-                .body("price", hasItems(price.toArray(new Double[0])));
+                .body("price", hasItems(price.toArray(new String[0])));
     }
     
     @Test
-    public void testGetAllCars_licenseplate() {
-        List<String> licensePlate = new ArrayList();
+    public void testGetAllCars_id() {
+        List<String> id = new ArrayList();
 
         carDTOs.forEach(carDTO -> {
-            licensePlate.add(carDTO.getMake());
+            id.add(Long.toString(carDTO.getId()));
         });
 
         given()
@@ -218,25 +221,9 @@ public class CarResourceTest {
                 .get("cars/all")
                 .then()
                 .assertThat()
-                .body("licensePlate", hasItems(licensePlate.toArray(new String[0])));
+                .body("id", hasItems(id.toArray(new String[0])));
     }
-    
-            @Test
-    public void testGetAllCars_owner() {
-        List<String> owner = new ArrayList();
 
-        carDTOs.forEach(carDTO -> {
-            owner.add(carDTO.getOwner());
-        });
-
-        given()
-                .contentType(ContentType.JSON)
-                .get("cars/all")
-                .then()
-                .assertThat()
-                .body("owner", hasItems(owner.toArray(new String[0])));
-    }
-    
     @Test
     public void testResetDB() {
         given()
@@ -246,5 +233,5 @@ public class CarResourceTest {
                 .assertThat()
                 .body("msg", equalTo("Reset performed"));
     }
-    
+
 }

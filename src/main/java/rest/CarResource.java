@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import facades.CarFacade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
