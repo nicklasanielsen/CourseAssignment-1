@@ -20,6 +20,7 @@ public class CarDTOTest {
     @BeforeEach
     public void setUp() {
         car = new Car(2006, "Skoda", "Fabia", 29900, "AB12345", "Mads Madsen");
+        car.setId((long) 1);
         carDTO = new CarDTO(car);
     }
 
