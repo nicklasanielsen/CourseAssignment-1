@@ -16,7 +16,6 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
@@ -193,27 +192,11 @@ public class CarResourceTest {
     }
 
     @Test
-    public void testGetAllCars_price() {
-        List<String> price = new ArrayList();
-
-        carDTOs.forEach(carDTO -> {
-            price.add(Double.toString(carDTO.getPrice()));
-        });
-
-        given()
-                .contentType(ContentType.JSON)
-                .get("cars/all")
-                .then()
-                .assertThat()
-                .body("price", hasItems(price.toArray(new String[0])));
-    }
-    
-    @Test
     public void testGetAllCars_id() {
-        List<String> id = new ArrayList();
+        List<Integer> id = new ArrayList();
 
         carDTOs.forEach(carDTO -> {
-            id.add(Long.toString(carDTO.getId()));
+            id.add((int) carDTO.getId());
         });
 
         given()
@@ -221,7 +204,7 @@ public class CarResourceTest {
                 .get("cars/all")
                 .then()
                 .assertThat()
-                .body("id", hasItems(id.toArray(new String[0])));
+                .body("id", hasItems(id.toArray(new Integer[0])));
     }
 
     @Test
