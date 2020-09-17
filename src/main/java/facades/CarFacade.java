@@ -58,8 +58,8 @@ public class CarFacade {
 
         // Cars to be added
         cars.add(new Car(2000, "Skoda", "Superb", 10000.0, "AB12345", "Mathias Haugaard Nielsen"));
-        cars.add(new Car(2020, "Audi", "Q8", 100000.0, "ZZ98765", "Nikolaj Larsen"));
-        cars.add(new Car(2019, "Mercedes-Benz", "SLS Black Series", 50000.0, "CJ23498", "Lewis Hamilton"));
+        cars.add(new Car(2018, "Audi", "Q8", 100000.0, "ZZ98765", "Nikolaj Larsen"));
+        cars.add(new Car(2020, "Mercedes-Benz", "SLS Black Series", 50000.0, "CJ23498", "Lewis Hamilton"));
         cars.add(new Car(1983, "DeLorean Motor Company", "DMC DeLorean", 35000.0, "NN42069", "Nicklas Nielsen"));
         cars.add(new Car(2000, "Aston Martin", "DBS V12", 250000.0, "TI30901", "James Bond"));
 
