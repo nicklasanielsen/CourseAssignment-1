@@ -92,9 +92,13 @@ public class JokeFacade {
         List<Joke> jokes = new ArrayList();
 
         // Jokes to be added
-        jokes.add(new Joke("Joke1", "Ref1", "Type1"));
-        jokes.add(new Joke("Joke2", "Ref2", "Type2"));
-        jokes.add(new Joke("Joke3", "Ref3", "Type3"));
+        jokes.add(new Joke("Hvad kalder man en flot pakistaner?\n Asif.", "de-sjove-jokes.dk", "Racistisk joke"));
+        jokes.add(new Joke("Dark humour is like food.\n Not everyone gets it.", "Joseph Stalin", "Dark humour"));
+        jokes.add(new Joke("Vil I høre en vits?\n SANDWICH!", "de-sjove-jokes.dk", "Dårlig joke"));
+        jokes.add(new Joke("Konen beklager sig til sin mand at hendes bryster hænger, hun har appelsinhud og for stor en røv. Om han ikke kunne give hende et kompliment, hvortil han svarer, “dit syn fejler i hvert fald ikke noget!", "de-sjove-jokes.dk", "Dårlig joke"));
+        jokes.add(new Joke("Hvad er ligheden mellem en stegepande og en luder?\n – De kan begge få pølsen til at sprøjte..", "de-sjove-jokes.dk", "Sexistisk  joke"));
+        jokes.add(new Joke("Hvem er den sjovest mand der nogensinde har levet.\n Hitler! Han tog nemlig gas på 6 millioner jøder.", "de-sjove-jokes.dk", "Jøde joke"));
+        jokes.add(new Joke("Hvilken farve er en postkasse inden i?\n Infrarød.", "de-sjove-jokes.dk", "Far joke"));
 
         try {
             em.getTransaction().begin();
