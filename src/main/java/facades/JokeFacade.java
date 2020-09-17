@@ -54,11 +54,11 @@ public class JokeFacade {
 
     public Joke getJokeById(long id) {
         EntityManager em = getEntityManager();
-
+        
         try {
             Query query = em.createNamedQuery("Joke.getById");
             query.setParameter("id", id);
-
+            
             return (Joke) query.getSingleResult();
         } catch (Exception e) {
             return null;
@@ -103,10 +103,12 @@ public class JokeFacade {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Joke.deleteAllRows").executeUpdate();
-            jokes.forEach(joke -> {
-                em.persist(joke);
-            });
             em.getTransaction().commit();
+            jokes.forEach(joke -> {
+                em.getTransaction().begin();
+                em.persist(joke);
+                em.getTransaction().commit();
+            });
         } finally {
             em.close();
         }

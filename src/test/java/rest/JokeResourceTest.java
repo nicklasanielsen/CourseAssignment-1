@@ -88,11 +88,11 @@ public class JokeResourceTest {
         jokes.add(new Joke("Joke3", "Ref3", "Type3"));
 
         try {
-            em.getTransaction().begin();
             jokes.forEach(joke -> {
+                em.getTransaction().begin();
                 em.persist(joke);
+                em.getTransaction().commit();
             });
-            em.getTransaction().commit();
         } finally {
             em.close();
         }

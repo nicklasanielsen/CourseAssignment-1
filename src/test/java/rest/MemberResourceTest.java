@@ -86,11 +86,11 @@ public class MemberResourceTest {
         members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
 
         try {
-            em.getTransaction().begin();
             members.forEach(member -> {
+                em.getTransaction().begin();
                 em.persist(member);
+                em.getTransaction().commit();
             });
-            em.getTransaction().commit();
         } finally {
             em.close();
         }

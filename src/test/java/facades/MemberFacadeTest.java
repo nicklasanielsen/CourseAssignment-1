@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * 
+ *
  * @author Nicklas Nielsen
  */
 public class MemberFacadeTest {
@@ -59,11 +59,11 @@ public class MemberFacadeTest {
         members.add(new Member("Nikolaj", null, "Larsen", "cph-nl174", "Nearial"));
 
         try {
-            em.getTransaction().begin();
             members.forEach(member -> {
+                em.getTransaction().begin();
                 em.persist(member);
+                em.getTransaction().commit();
             });
-            em.getTransaction().commit();
         } finally {
             em.close();
         }
@@ -100,15 +100,15 @@ public class MemberFacadeTest {
         // Assert
         assertTrue(expected.containsAll(actual));
     }
-    
+
     @Test
-    public void testResetDB(){
+    public void testResetDB() {
         // Arrange
         boolean expected = true;
-        
+
         // Act
         boolean actual = facade.resetDB();
-        
+
         // Assert
         assertEquals(expected, actual);
     }
