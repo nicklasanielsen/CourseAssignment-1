@@ -1,0 +1,71 @@
+<!--
+    @author Nicklas Nielsen
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cars</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">  
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">År</th>
+                                <th scope="col">Pris</th>
+                                <th scope="col">Mærke</th>
+                                <th scope="col">Model</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_body"></tbody>
+                    </table>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <button id="fetchBtn">Hent alle biler</button>
+                    <button id="sortByYear">Sorter efter år</button>
+                    <button id="sortByModel">Sorter efter model</button>
+                    <button id="sortByMake">Sorter efter mærke</button>
+                    <button id="sortByPrice">Sorter efter pris</button>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <form id="filter">
+                        <input type="text" id="filterValue">
+                        <select id="filterOption">
+                            <option value="year">År</option>
+                            <option value="price">Pris</option>
+                            <option value="make">Mærke</option>
+                            <option value="model">Model</option>
+                        </select>
+                        <input type="submit" value="Filter">
+                    </form>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <a href="./index.html">Tilbage til forsiden..</a>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+        </div>
+        <div id="cars" style="visibility: hidden"></div>
+        <script src="./JS/FetchCars.js"></script>
+        <script src="./JS/CarSorting.js"></script>
+        <script src="./JS/FilterCars.js"></script>
+    </body>
+</html>
