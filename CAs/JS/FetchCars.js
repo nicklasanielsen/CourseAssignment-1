@@ -3,7 +3,7 @@
  * @author Nicklas Nielsen
  */
 
-let fetchBtn = document.getElementById("");
+let fetchBtn = document.getElementById("fetchBtn");
 
 fetchBtn.addEventListener('click', function (e) {
     e.preventDefault();
@@ -27,7 +27,7 @@ function updateCarsTable() {
     cars = cars.map(car => `<tr>
             <td>${car.id}</td>
             <td>${car.year}</td>
-            <td>${car.pice}</td>
+            <td>${car.price}</td>
             <td>${car.make}</td>
             <td>${car.model}</td>
             </tr>`);
