@@ -2,55 +2,102 @@
  * @author Nikolaj Larsen
  */ 
 
-document.getElementById("filter").addEventListener('click', function(e){
+document.getElementById("filter").addEventListener('submit', function(e){
     e.preventDefault();
     filterCars();
 });
 
 function filterCars(){
-    let cars = fetchAllCars();
-    let searchParamater = document.getElementById("filterOption");
-    let FilterValue = document.getElementById("filterValue");
-    let result;
+    let searchParamater = document.getElementById("filterOption").value;
+    let FilterValue = document.getElementById("filterValue").value;
     
     if(searchParamater === "year"){
-        result = filterCarByYear(cars, FilterValue);       
+        filterCarsByYear(FilterValue);       
     }else if(searchParamater === "make"){
-        result = filterCarByMake(cars, FilterValue);
+        filterCarsByMake(FilterValue);
     }else if(searchParamater === "price"){
-        result = filterCarByPrice(cars, FilterValue);
+        filterCarsByPrice(FilterValue);
     }else if(searchParamater === "model"){
-        result = filterCarByModel(cars, FilterValue);
-    }else {
-        return;
+        filterCarsByModel(FilterValue);
     }
-    
-    document.getElementById("table_body").innerHTML = result.map(car => `<tr>
-            <td>${car.id}</td>
-            <td>${car.year}</td>
-            <td>${car.price}</td>
-            <td>${car.make}</td>
-            <td>${car.model}</td>
-            </tr>`).join("");
-    
 }
 
-function filterCarsByYear(cars, filterValue){
-    let filterCar = cars.filter(car => car.year === filterValue);
-    return filterCar;
+function filterCarsByYear(filterValue){
+    let tableBody = document.getElementById("table_body");
+    let url = './api/cars/all';
+
+    fetch(url)
+            .then(res => res.json())
+            .then(data => {
+            let cars = data.filter(car => car.year === parseInt(filterValue)).map(car =>
+                    `<tr>
+                    <td>${car.id}</td>
+                    <td>${car.year}</td>
+                    <td>${car.price}</td>
+                    <td>${car.make}</td>
+                    <td>${car.model}</td>
+                    </tr>`);
+
+                tableBody.innerHTML = cars.join("");
+        });  
 }
 
-function filterCarsByMake(cars, filterValue){
-    let filterCar = cars.filter(car => car.make === filterValue);
-    return filterCar;
+function filterCarsByMake(filterValue){
+    let tableBody = document.getElementById("table_body");
+    let url = './api/cars/all';
+
+    fetch(url)
+            .then(res => res.json())
+            .then(data => {
+            let cars = data.filter(car => car.make === filterValue).map(car =>
+                    `<tr>
+                    <td>${car.id}</td>
+                    <td>${car.year}</td>
+                    <td>${car.price}</td>
+                    <td>${car.make}</td>
+                    <td>${car.model}</td>
+                    </tr>`);
+
+                tableBody.innerHTML = cars.join("");
+        }); 
 }
 
-function filterCarsByPrice(cars, filterValue){
-    let filterCar = cars.filter(car => car.price === filterValue);
-    return filterCar;
+function filterCarsByPrice(filterValue){
+    let tableBody = document.getElementById("table_body");
+    let url = './api/cars/all';
+
+    fetch(url)
+            .then(res => res.json())
+            .then(data => {
+            let cars = data.filter(car => car.price === parseFloat(filterValue)).map(car =>
+                    `<tr>
+                    <td>${car.id}</td>
+                    <td>${car.year}</td>
+                    <td>${car.price}</td>
+                    <td>${car.make}</td>
+                    <td>${car.model}</td>
+                    </tr>`);
+
+                tableBody.innerHTML = cars.join("");
+        }); 
 }
 
-function filterCarsByModel(cars, filterValue){
-    let filterCar = cars.filter(car => car.model === filterValue);
-    return filterCar;
+function filterCarsByModel(filterValue){
+    let tableBody = document.getElementById("table_body");
+    let url = './api/cars/all';
+
+    fetch(url)
+            .then(res => res.json())
+            .then(data => {
+            let cars = data.filter(car => car.model === filterValue).map(car =>
+                    `<tr>
+                    <td>${car.id}</td>
+                    <td>${car.year}</td>
+                    <td>${car.price}</td>
+                    <td>${car.make}</td>
+                    <td>${car.model}</td>
+                    </tr>`);
+
+                tableBody.innerHTML = cars.join("");
+        }); 
 }
