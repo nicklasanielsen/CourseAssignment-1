@@ -8,22 +8,18 @@ let sort3 = document.getElementById("sortByMake");
 let sort4 = document.getElementById("sortByPrice");
 
 sort1.addEventListener('click', function (e) {
-    e.preventDefault();
     sortByYear();
 });
 
 sort2.addEventListener('click', function (e) {
-    e.preventDefault();
     sortByModel();
 });
 
 sort3.addEventListener('click', function (e) {
-    e.preventDefault();
     sortByMake();
 });
 
 sort4.addEventListener('click', function (e) {
-    e.preventDefault();
     sortByPrice();
 });
 
@@ -49,9 +45,9 @@ function sortByYear() {
                 let tableArray = sortedByYear.map(car => `<tr>
             <td>${car.id}</td>
             <td>${car.year}</td>
+            <td>${car.price}</td>
             <td>${car.make}</td>
             <td>${car.model}</td>
-            <td>${car.price}</td>
             </tr>`
                 )
 
@@ -75,9 +71,9 @@ function sortByModel() {
                 let tableArray = sortedByModel.map(car => `<tr>
             <td>${car.id}</td>
             <td>${car.year}</td>
+            <td>${car.price}</td>
             <td>${car.make}</td>
             <td>${car.model}</td>
-            <td>${car.price}</td>
             </tr>`
                 )
 
@@ -101,9 +97,9 @@ function sortByMake() {
                 let tableArray = sortedByMake.map(car => `<tr>
             <td>${car.id}</td>
             <td>${car.year}</td>
+            <td>${car.price}</td>
             <td>${car.make}</td>
             <td>${car.model}</td>
-            <td>${car.price}</td>
             </tr>`
                 )
 
@@ -134,9 +130,9 @@ function sortByPrice() {
                 let tableArray = sortedByPrice.map(car => `<tr>
             <td>${car.id}</td>
             <td>${car.year}</td>
+            <td>${car.price}</td>
             <td>${car.make}</td>
             <td>${car.model}</td>
-            <td>${car.price}</td>
             </tr>`
                 )
 
