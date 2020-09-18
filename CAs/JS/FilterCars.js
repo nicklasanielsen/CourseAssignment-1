@@ -9,7 +9,7 @@ document.getElementById("filter").addEventListener('click', function(e){
 
 function filterCars(){
     let cars = fetchAllCars();
-    let searchParamater = document.getElementById("filter");
+    let searchParamater = document.getElementById("filterOption");
     let FilterValue = document.getElementById("filterValue");
     let result;
     
